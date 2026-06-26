@@ -195,6 +195,11 @@ export default function Terminal() {
         setCurrentPath(result.newPath);
       }
 
+      // Handle download
+      if (result.downloadUrl) {
+        window.open(result.downloadUrl, '_blank');
+      }
+
       // Handle contact mode activation
       if (trimmed.toLowerCase() === "contact") {
         setIsContactMode(true);

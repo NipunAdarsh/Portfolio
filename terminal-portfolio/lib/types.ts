@@ -14,6 +14,7 @@ export interface CommandResult {
   isError?: boolean;
   isWarning?: boolean;
   clear?: boolean;
+  downloadUrl?: string;
 }
 
 export interface HistoryEntry {
