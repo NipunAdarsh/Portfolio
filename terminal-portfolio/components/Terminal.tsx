@@ -519,7 +519,9 @@ export default function Terminal() {
       </div>
 
       </div>
-
+        </div>
+      </div>
+      
       {/* Bottom Status Bar */}
       <div className="os-statusbar hidden md:flex">
         <div>(C) 1984 PORTFOLIO_OS V1.0.4</div>
