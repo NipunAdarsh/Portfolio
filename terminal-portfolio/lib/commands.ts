@@ -406,7 +406,7 @@ export function executeCommand(
       if (args[0] === "resume.pdf") {
         return {
           output: `  <span class="text-green">Downloading resume.pdf...</span>\n  <span class="text-green-dim">--2026-06-26 18:54:24--  https://nipun.dev/resume.pdf</span>\n  <span class="text-green-dim">Resolving nipun.dev... 76.76.21.21</span>\n  <span class="text-green-dim">Connecting to nipun.dev... connected.</span>\n  <span class="text-green">HTTP request sent, awaiting response... 200 OK</span>\n  <span class="text-green-dim">Length: 245760 (240K) [application/pdf]</span>\n  <span class="text-green-dim">Saving to: 'resume.pdf'</span>\n\n  <span class="text-green">resume.pdf           100%[==================>] 240K  --.-KB/s    in 0.1s</span>\n\n  <span class="text-green">Saved.</span>\n  <span class="text-gray-dim">Opening file download...</span>`,
-          downloadUrl: "/resume.pdf"
+          downloadUrl: "/Portfolio/resume.pdf"
         };
       }
       return {
