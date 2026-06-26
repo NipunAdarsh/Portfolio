@@ -1,0 +1,449 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+@import "tailwindcss";
+
+:root {
+  /* Terminal Color Palette */
+  --term-bg: #000000;
+  --term-surface: #0a0a0a;
+  --term-green: #00FF41;
+  --term-green-dim: #008F11;
+  --term-green-glow: rgba(0, 255, 65, 0.4);
+  --term-gray: #E0E0E0;
+  --term-gray-dim: #888888;
+  --term-red: #FF003C;
+  --term-yellow: #F3E600;
+  --term-cyan: #00FFFF;
+  --term-white: #FFFFFF;
+
+  /* Typography */
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'SF Mono', monospace;
+  --font-size-base: 14px;
+  --font-size-sm: 12px;
+  --font-size-lg: 16px;
+
+  /* Spacing */
+  --line-height: 1.6;
+  --char-width: 8.4px;
+}
+
+/* Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background: var(--term-bg);
+  color: var(--term-gray);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Selection styling */
+::selection {
+  background: var(--term-green);
+  color: var(--term-bg);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--term-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--term-green-dim);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--term-green);
+}
+
+/* ========================================
+   CRT / Terminal Visual Effects
+   ======================================== */
+
+/* Scanline overlay */
+.crt-overlay {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15) 0px,
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: overlay;
+}
+
+/* Phosphor text glow */
+.text-glow {
+  text-shadow: 0 0 5px var(--term-green-glow);
+}
+
+/* Strong glow for accents */
+.text-glow-strong {
+  text-shadow:
+    0 0 5px var(--term-green-glow),
+    0 0 10px var(--term-green-glow),
+    0 0 20px rgba(0, 255, 65, 0.2);
+}
+
+/* Blinking cursor */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.cursor-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* Typewriter effect base */
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+/* Flicker effect (very subtle) */
+@keyframes flicker {
+  0% { opacity: 1; }
+  3% { opacity: 0.98; }
+  6% { opacity: 1; }
+  7% { opacity: 0.97; }
+  9% { opacity: 1; }
+  30% { opacity: 1; }
+  36% { opacity: 0.99; }
+  40% { opacity: 1; }
+  60% { opacity: 1; }
+  62% { opacity: 0.98; }
+  64% { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+.crt-flicker {
+  animation: flicker 8s infinite;
+}
+
+/* Boot sequence fade in */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in forwards;
+}
+
+/* Slide up animation for lines */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-up {
+  animation: slideUp 0.15s ease-out forwards;
+}
+
+/* ========================================
+   Terminal Color Utility Classes
+   ======================================== */
+
+.text-green { color: var(--term-green); }
+.text-green-dim { color: var(--term-green-dim); }
+.text-gray { color: var(--term-gray); }
+.text-gray-dim { color: var(--term-gray-dim); }
+.text-red { color: var(--term-red); }
+.text-yellow { color: var(--term-yellow); }
+.text-cyan { color: var(--term-cyan); }
+.text-white { color: var(--term-white); }
+
+.bg-green { background-color: var(--term-green); }
+.bg-surface { background-color: var(--term-surface); }
+
+/* Reverse highlight (black on green) */
+.highlight {
+  background-color: var(--term-green);
+  color: var(--term-bg);
+  padding: 0 4px;
+}
+
+/* ========================================
+   Terminal Window Chrome
+   ======================================== */
+
+/* ========================================
+   OS Desktop Layout
+   ======================================== */
+
+.os-desktop {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--term-bg);
+  background-image: radial-gradient(circle at center, #0a0a0a 0%, #000000 100%);
+  overflow: hidden;
+}
+
+.os-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 48px;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--term-green-dim);
+  color: var(--term-green-dim);
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.os-nav-links {
+  display: flex;
+  gap: 32px;
+}
+
+.os-nav-link {
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 4px 12px;
+  font-weight: 700;
+}
+
+.os-nav-link:hover, .os-nav-link.active {
+  color: var(--term-bg);
+  background-color: var(--term-green);
+  text-shadow: none;
+}
+
+.os-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.os-sidebar {
+  width: 250px;
+  background-color: #050505;
+  border-right: 1px solid var(--term-green-dim);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 0;
+  flex-shrink: 0;
+}
+
+.sidebar-header {
+  padding: 0 24px 24px 24px;
+  border-bottom: 1px solid #1a1a1a;
+  margin-bottom: 12px;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 24px;
+  color: var(--term-gray-dim);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: var(--font-size-sm);
+}
+
+.sidebar-item:hover {
+  color: var(--term-green);
+  background-color: rgba(0, 255, 65, 0.05);
+}
+
+.sidebar-item.active {
+  color: var(--term-bg);
+  background-color: var(--term-green);
+  border-right: 4px solid var(--term-green-glow);
+}
+
+.sidebar-icon {
+  margin-right: 12px;
+  width: 16px;
+  text-align: center;
+}
+
+.os-main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  overflow: hidden;
+}
+
+.os-statusbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 32px;
+  padding: 0 24px;
+  border-top: 1px solid var(--term-green-dim);
+  color: var(--term-green-dim);
+  font-size: 10px;
+  flex-shrink: 0;
+}
+
+.terminal-window {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  height: 100%;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--term-bg);
+  border: 1px solid var(--term-green-dim);
+  border-radius: 6px;
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.05);
+  overflow: hidden;
+}
+
+.terminal-titlebar {
+  display: flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 12px;
+  background: var(--term-surface);
+  border-bottom: 1px solid #1a1a1a;
+  flex-shrink: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.titlebar-dots {
+  display: flex;
+  gap: 6px;
+  margin-right: 12px;
+}
+
+.titlebar-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.titlebar-dot.red { background: #FF5F56; }
+.titlebar-dot.yellow { background: #FFBD2E; }
+.titlebar-dot.green { background: #27C93F; }
+
+.titlebar-text {
+  color: var(--term-gray-dim);
+  font-size: var(--font-size-sm);
+  font-family: var(--font-mono);
+}
+
+.terminal-body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px;
+  scroll-behavior: smooth;
+}
+
+/* ========================================
+   Mobile Overlay
+   ======================================== */
+
+.mobile-overlay {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px;
+  background: var(--term-surface);
+  border-top: 1px solid var(--term-green-dim);
+  display: none;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  z-index: 100;
+}
+
+@media (max-width: 768px) {
+  .mobile-overlay {
+    display: flex;
+  }
+
+  .terminal-body {
+    padding: 8px;
+    padding-bottom: 60px;
+    font-size: var(--font-size-sm);
+  }
+
+  :root {
+    --font-size-base: 12px;
+    --font-size-sm: 10px;
+    --font-size-lg: 14px;
+  }
+}
+
+.mobile-btn {
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid var(--term-green-dim);
+  color: var(--term-green);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: background 0.1s, color 0.1s;
+}
+
+.mobile-btn:active {
+  background: var(--term-green);
+  color: var(--term-bg);
+}
+
+/* ========================================
+   Accessibility
+   ======================================== */
+
+/* Hidden input for mobile keyboard */
+.hidden-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
